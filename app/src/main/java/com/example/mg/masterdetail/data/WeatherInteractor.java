@@ -13,12 +13,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherInteractorI implements ILoadItemsInteractor {
-    private static final String TAG = "WeatherInteractorI";
+public class WeatherInteractor implements ILoadItemsInteractor {
+    private static final String TAG = "WeatherInteractor";
+    private static final int MOCK_TIME = 1500;
     private static WeatherModel mWeatherModel;
     private static Weather10daysModel mWeather10DaysModel;
 
-    public WeatherInteractorI() {
+    public WeatherInteractor() {
 
         weather10DaysData();
         weatherCityData();
@@ -31,7 +32,7 @@ public class WeatherInteractorI implements ILoadItemsInteractor {
             public void run() {
                 listener.onFinished(mWeather10DaysModel, mWeatherModel);
             }
-        }, 1500);
+        }, MOCK_TIME);
     }
 
 
@@ -44,8 +45,8 @@ public class WeatherInteractorI implements ILoadItemsInteractor {
 
         Call<WeatherModel> call = client.weatherForCity(
                 IWeatherClient.KEY,
-                IWeatherClient.country,
-                IWeatherClient.city);
+                IWeatherClient.COUNTRY,
+                IWeatherClient.CITY);
         call.enqueue(new Callback<WeatherModel>() {
             @Override
             public void onResponse(@NonNull Call<WeatherModel> call,
@@ -71,8 +72,8 @@ public class WeatherInteractorI implements ILoadItemsInteractor {
 
         Call<Weather10daysModel> call = client.weather10DaysForecast(
                 IWeatherClient.KEY,
-                IWeatherClient.country,
-                IWeatherClient.city);
+                IWeatherClient.COUNTRY,
+                IWeatherClient.CITY);
         call.enqueue(new Callback<Weather10daysModel>() {
             @Override
             public void onResponse(Call<Weather10daysModel> call, Response<Weather10daysModel> response) {

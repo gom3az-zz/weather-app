@@ -7,7 +7,7 @@ public class WeatherModel {
 
     /**
      * response : {"version":"0.1","termsofService":"http://www.wunderground.com/weather/api/d/terms.html","features":{"conditions":1}}
-     * current_observation : {"image":{"url":"http://icons.wxug.com/graphics/wu2/logo_130x80.png","title":"Weather Underground","link":"http://www.wunderground.com"},"display_location":{"full":"Cairo, Egypt","city":"Cairo","state":"KB","state_name":"Egypt","country":"EG","country_iso3166":"EG","zip":"00000","magic":"1","wmo":"62375","latitude":"30.05999947","longitude":"31.25000000","elevation":"60.0"},"observation_location":{"full":"Cairo, ","city":"Cairo","state":"","country":"EG","country_iso3166":"EG","latitude":"30.04","longitude":"31.24","elevation":"157 ft"},"estimated":{},"station_id":"ICAIRO11","observation_time":"Last Updated on May 12, 6:33 PM EET","observation_time_rfc822":"Sat, 12 May 2018 18:33:38 +0200","observation_epoch":"1526142818","local_time_rfc822":"Sat, 12 May 2018 18:33:57 +0200","local_epoch":"1526142837","local_tz_short":"EET","local_tz_long":"Africa/Cairo","local_tz_offset":"+0200","weather":"Mostly Cloudy","temperature_string":"79.2 F (26.2 C)","temp_f":79.2,"temp_c":26.2,"relative_humidity":"48%","wind_string":"From the North at 3.2 MPH","wind_dir":"North","wind_degrees":360,"wind_mph":3.2,"wind_gust_mph":0,"wind_kph":5.1,"wind_gust_kph":0,"pressure_mb":"1010","pressure_in":"29.83","pressure_trend":"0","dewpoint_string":"58 F (14 C)","dewpoint_f":58,"dewpoint_c":14,"heat_index_string":"NA","heat_index_f":"NA","heat_index_c":"NA","windchill_string":"NA","windchill_f":"NA","windchill_c":"NA","feelslike_string":"79.2 F (27 C)","feelslike_f":"79.2","feelslike_c":"27","visibility_mi":"6.2","visibility_km":"10.0","solarradiation":"--","UV":"0","precip_1hr_string":"-999.00 in ( 0 mm)","precip_1hr_in":"-999.00","precip_1hr_metric":" 0","precip_today_string":"0.00 in (0 mm)","precip_today_in":"0.00","precip_today_metric":"0","icon":"mostlycloudy","icon_url":"http://icons.wxug.com/i/c/k/mostlycloudy.gif","forecast_url":"http://www.wunderground.com/global/stations/62375.html","history_url":"http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=ICAIRO11","ob_url":"http://www.wunderground.com/cgi-bin/findweather/getForecast?query=30.035122,31.237038","nowcast":""}
+     * current_observation : {"image":{"url":"http://icons.wxug.com/graphics/wu2/logo_130x80.png","title":"Weather Underground","link":"http://www.wunderground.com"},"display_location":{"full":"Cairo, Egypt","CITY":"Cairo","state":"KB","state_name":"Egypt","COUNTRY":"EG","country_iso3166":"EG","zip":"00000","magic":"1","wmo":"62375","latitude":"30.05999947","longitude":"31.25000000","elevation":"60.0"},"observation_location":{"full":"Cairo, ","CITY":"Cairo","state":"","COUNTRY":"EG","country_iso3166":"EG","latitude":"30.04","longitude":"31.24","elevation":"157 ft"},"estimated":{},"station_id":"ICAIRO11","observation_time":"Last Updated on May 12, 6:33 PM EET","observation_time_rfc822":"Sat, 12 May 2018 18:33:38 +0200","observation_epoch":"1526142818","local_time_rfc822":"Sat, 12 May 2018 18:33:57 +0200","local_epoch":"1526142837","local_tz_short":"EET","local_tz_long":"Africa/Cairo","local_tz_offset":"+0200","weather":"Mostly Cloudy","temperature_string":"79.2 F (26.2 C)","temp_f":79.2,"temp_c":26.2,"relative_humidity":"48%","wind_string":"From the North at 3.2 MPH","wind_dir":"North","wind_degrees":360,"wind_mph":3.2,"wind_gust_mph":0,"wind_kph":5.1,"wind_gust_kph":0,"pressure_mb":"1010","pressure_in":"29.83","pressure_trend":"0","dewpoint_string":"58 F (14 C)","dewpoint_f":58,"dewpoint_c":14,"heat_index_string":"NA","heat_index_f":"NA","heat_index_c":"NA","windchill_string":"NA","windchill_f":"NA","windchill_c":"NA","feelslike_string":"79.2 F (27 C)","feelslike_f":"79.2","feelslike_c":"27","visibility_mi":"6.2","visibility_km":"10.0","solarradiation":"--","UV":"0","precip_1hr_string":"-999.00 in ( 0 mm)","precip_1hr_in":"-999.00","precip_1hr_metric":" 0","precip_today_string":"0.00 in (0 mm)","precip_today_in":"0.00","precip_today_metric":"0","icon":"mostlycloudy","icon_url":"http://icons.wxug.com/i/c/k/mostlycloudy.gif","forecast_url":"http://www.wunderground.com/global/stations/62375.html","history_url":"http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=ICAIRO11","ob_url":"http://www.wunderground.com/cgi-bin/findweather/getForecast?query=30.035122,31.237038","nowcast":""}
      */
 
     private ResponseBean response;
@@ -99,8 +99,8 @@ public class WeatherModel {
     public static class CurrentObservationBean {
         /**
          * image : {"url":"http://icons.wxug.com/graphics/wu2/logo_130x80.png","title":"Weather Underground","link":"http://www.wunderground.com"}
-         * display_location : {"full":"Cairo, Egypt","city":"Cairo","state":"KB","state_name":"Egypt","country":"EG","country_iso3166":"EG","zip":"00000","magic":"1","wmo":"62375","latitude":"30.05999947","longitude":"31.25000000","elevation":"60.0"}
-         * observation_location : {"full":"Cairo, ","city":"Cairo","state":"","country":"EG","country_iso3166":"EG","latitude":"30.04","longitude":"31.24","elevation":"157 ft"}
+         * display_location : {"full":"Cairo, Egypt","CITY":"Cairo","state":"KB","state_name":"Egypt","COUNTRY":"EG","country_iso3166":"EG","zip":"00000","magic":"1","wmo":"62375","latitude":"30.05999947","longitude":"31.25000000","elevation":"60.0"}
+         * observation_location : {"full":"Cairo, ","CITY":"Cairo","state":"","COUNTRY":"EG","country_iso3166":"EG","latitude":"30.04","longitude":"31.24","elevation":"157 ft"}
          * estimated : {}
          * station_id : ICAIRO11
          * observation_time : Last Updated on May 12, 6:33 PM EET
@@ -710,10 +710,10 @@ public class WeatherModel {
         public static class DisplayLocationBean {
             /**
              * full : Cairo, Egypt
-             * city : Cairo
+             * CITY : Cairo
              * state : KB
              * state_name : Egypt
-             * country : EG
+             * COUNTRY : EG
              * country_iso3166 : EG
              * zip : 00000
              * magic : 1

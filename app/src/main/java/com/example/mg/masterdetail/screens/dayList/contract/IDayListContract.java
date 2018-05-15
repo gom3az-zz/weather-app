@@ -19,7 +19,7 @@ public interface IDayListContract {
     }
 
     interface UserActions {
-
+        void fetchData();
 
     }
 }

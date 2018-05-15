@@ -1,11 +1,12 @@
 package com.example.mg.masterdetail.screens.dayList.presenter;
 
 import com.example.mg.masterdetail.data.ILoadItemsInteractor;
-import com.example.mg.masterdetail.data.WeatherInteractorI;
+import com.example.mg.masterdetail.data.WeatherInteractor;
 import com.example.mg.masterdetail.data.model.Weather10daysModel;
 import com.example.mg.masterdetail.data.model.WeatherModel;
 import com.example.mg.masterdetail.screens.dayList.contract.IDayListContract;
 import com.example.mg.masterdetail.screens.dayList.dayListActivity;
+import com.example.mg.masterdetail.util.NetworkHelper;
 
 public class DayListPresenter implements IDayListContract.UserActions, ILoadItemsInteractor.OnFinishedListener {
 
@@ -16,9 +17,9 @@ public class DayListPresenter implements IDayListContract.UserActions, ILoadItem
     public DayListPresenter(dayListActivity view) {
         assert this.view != null;
         this.view = view;
-        mWeatherInteractor = new WeatherInteractorI();
-        mWeatherInteractor.findItems(this);
-        view.showProgress();
+        mWeatherInteractor = new WeatherInteractor();
+        fetchData();
+
     }
 
     @Override
@@ -26,5 +27,17 @@ public class DayListPresenter implements IDayListContract.UserActions, ILoadItem
         view.hideProgress();
         view.init(dayModel.getCurrent_observation());
         view.setupRecyclerView(tenDaysModel.getForecast().getSimpleforecast().getForecastday());
+    }
+
+    @Override
+    public void fetchData() {
+        if (NetworkHelper.getInstance().isNetworkAvailable(view)) {
+            view.showProgress();
+            mWeatherInteractor.findItems(this);
+        } else {
+            view.hideProgress();
+
+        }
+
     }
 }

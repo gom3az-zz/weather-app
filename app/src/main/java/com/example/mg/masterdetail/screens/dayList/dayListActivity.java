@@ -63,10 +63,14 @@ public class dayListActivity extends AppCompatActivity implements IDayListContra
 
     @Override
     public void setupRecyclerView(@NonNull List<ForecastdayBeanX> daysData) {
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
-        recyclerView.setAdapter(new WeatherDayRecyclerViewAdapter(
-                this,
-                daysData)
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.HORIZONTAL));
+        recyclerView.setAdapter(
+                new WeatherDayRecyclerViewAdapter(
+                        this,
+                        daysData)
         );
     }
 
@@ -81,9 +85,7 @@ public class dayListActivity extends AppCompatActivity implements IDayListContra
         Glide.with(this)
                 .asGif()
                 .load(todayData.getIcon_url())
-
                 .into(imageWeatherCondition);
-
     }
 
     @Override

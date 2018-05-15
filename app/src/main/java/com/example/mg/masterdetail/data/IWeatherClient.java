@@ -10,17 +10,17 @@ import retrofit2.http.Path;
 public interface IWeatherClient {
     String BASE_URL = "http://api.wunderground.com";
     String KEY = "24b6732692393b6b";
-    String country = "EG";
-    String city = "Cairo";
+    String COUNTRY = "EG";
+    String CITY = "Cairo";
 
 
-    @GET("/api/{key}/conditions/q/{country}/{city}.json")
+    @GET("/api/{key}/conditions/q/{COUNTRY}/{CITY}.json")
     Call<WeatherModel> weatherForCity(@Path("key") String key,
-                                      @Path("country") String country,
-                                      @Path("city") String city);
+                                      @Path("COUNTRY") String country,
+                                      @Path("CITY") String city);
 
-    @GET("/api/{key}/forecast10day/q/{country}/{city}.json")
+    @GET("/api/{key}/forecast10day/q/{COUNTRY}/{CITY}.json")
     Call<Weather10daysModel> weather10DaysForecast(@Path("key") String key,
-                                                   @Path("country") String country,
-                                                   @Path("city") String city);
+                                                   @Path("COUNTRY") String country,
+                                                   @Path("CITY") String city);
 }
