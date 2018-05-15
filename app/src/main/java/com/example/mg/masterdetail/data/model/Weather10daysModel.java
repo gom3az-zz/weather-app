@@ -1,4 +1,4 @@
-package com.example.mg.masterdetail.model;
+package com.example.mg.masterdetail.data.model;
 
 import com.google.gson.Gson;
 

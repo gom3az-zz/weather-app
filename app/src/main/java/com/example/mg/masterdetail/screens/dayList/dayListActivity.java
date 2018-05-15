@@ -12,11 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mg.masterdetail.R;
-import com.example.mg.masterdetail.RecycleViewAdapter.SimpleItemRecyclerViewAdapter;
-import com.example.mg.masterdetail.model.Weather10daysModel.ForecastBean.SimpleforecastBean.ForecastdayBeanX;
-import com.example.mg.masterdetail.model.WeatherModel;
-import com.example.mg.masterdetail.screens.dayDetail.dayDetailActivity;
-import com.example.mg.masterdetail.screens.dayList.contract.DayListContract;
+import com.example.mg.masterdetail.data.model.Weather10daysModel.ForecastBean.SimpleforecastBean.ForecastdayBeanX;
+import com.example.mg.masterdetail.data.model.WeatherModel;
+import com.example.mg.masterdetail.screens.dayList.contract.IDayListContract;
 import com.example.mg.masterdetail.screens.dayList.presenter.DayListPresenter;
 
 import java.util.List;
@@ -24,16 +22,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * An activity representing a list of days. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link dayDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
-public class dayListActivity extends AppCompatActivity implements DayListContract.View {
+public class dayListActivity extends AppCompatActivity implements IDayListContract.View {
 
+    private static final String TAG = "dayListActivity";
+    @BindView(R.id.day_list)
+    public
+    RecyclerView recyclerView;
     @BindView(R.id.text_city_name)
     TextView textCityName;
     @BindView(R.id.text_weather_condition)
@@ -50,13 +44,7 @@ public class dayListActivity extends AppCompatActivity implements DayListContrac
     TextView textHumidity;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-
-
     private DayListPresenter mDayListPresenter;
-    private static final String TAG = "dayListActivity";
-    @BindView(R.id.day_list)
-    public
-    RecyclerView recyclerView;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -76,7 +64,7 @@ public class dayListActivity extends AppCompatActivity implements DayListContrac
     @Override
     public void setupRecyclerView(@NonNull List<ForecastdayBeanX> daysData) {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(
+        recyclerView.setAdapter(new WeatherDayRecyclerViewAdapter(
                 this,
                 daysData)
         );

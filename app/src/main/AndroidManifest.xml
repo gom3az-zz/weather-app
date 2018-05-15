@@ -9,9 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".receiver.PullWeatherData"
-            android:exported="false"/>
+
         <activity
             android:name=".screens.dayList.dayListActivity"
             android:label="@string/title_day_list"
@@ -22,15 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".screens.dayDetail.dayDetailActivity"
-            android:label="@string/title_day_detail"
-            android:parentActivityName=".screens.dayList.dayListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mg.masterdetail.screens.dayList.dayListActivity" />
-        </activity>
+
     </application>
 
 </manifest>

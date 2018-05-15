@@ -1,22 +1,22 @@
 package com.example.mg.masterdetail.screens.dayList.presenter;
 
-import com.example.mg.masterdetail.model.Weather10daysModel;
-import com.example.mg.masterdetail.model.WeatherModel;
-import com.example.mg.masterdetail.receiver.LoadItemsInteractor;
-import com.example.mg.masterdetail.receiver.WeatherInteractor;
-import com.example.mg.masterdetail.screens.dayList.contract.DayListContract;
+import com.example.mg.masterdetail.data.ILoadItemsInteractor;
+import com.example.mg.masterdetail.data.WeatherInteractorI;
+import com.example.mg.masterdetail.data.model.Weather10daysModel;
+import com.example.mg.masterdetail.data.model.WeatherModel;
+import com.example.mg.masterdetail.screens.dayList.contract.IDayListContract;
 import com.example.mg.masterdetail.screens.dayList.dayListActivity;
 
-public class DayListPresenter implements DayListContract.UserActions, LoadItemsInteractor.OnFinishedListener {
+public class DayListPresenter implements IDayListContract.UserActions, ILoadItemsInteractor.OnFinishedListener {
 
-    private dayListActivity view;
-    private LoadItemsInteractor mWeatherInteractor;
     private static final String TAG = "DayListPresenter";
+    private dayListActivity view;
+    private ILoadItemsInteractor mWeatherInteractor;
 
     public DayListPresenter(dayListActivity view) {
         assert this.view != null;
         this.view = view;
-        mWeatherInteractor = new WeatherInteractor();
+        mWeatherInteractor = new WeatherInteractorI();
         mWeatherInteractor.findItems(this);
         view.showProgress();
     }
@@ -26,15 +26,5 @@ public class DayListPresenter implements DayListContract.UserActions, LoadItemsI
         view.hideProgress();
         view.init(dayModel.getCurrent_observation());
         view.setupRecyclerView(tenDaysModel.getForecast().getSimpleforecast().getForecastday());
-    }
-
-    @Override
-    public void onResume() {
-        assert view != null;
-    }
-
-    @Override
-    public void onDestroy() {
-        view = null;
     }
 }

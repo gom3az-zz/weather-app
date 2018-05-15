@@ -1,11 +1,11 @@
-package com.example.mg.masterdetail.receiver;
+package com.example.mg.masterdetail.data;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.mg.masterdetail.model.Weather10daysModel;
-import com.example.mg.masterdetail.model.WeatherModel;
+import com.example.mg.masterdetail.data.model.Weather10daysModel;
+import com.example.mg.masterdetail.data.model.WeatherModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,14 +13,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static java.lang.Thread.sleep;
-
-public class WeatherInteractor implements LoadItemsInteractor {
-    private static final String TAG = "WeatherInteractor";
+public class WeatherInteractorI implements ILoadItemsInteractor {
+    private static final String TAG = "WeatherInteractorI";
     private static WeatherModel mWeatherModel;
     private static Weather10daysModel mWeather10DaysModel;
 
-    public WeatherInteractor() {
+    public WeatherInteractorI() {
 
         weather10DaysData();
         weatherCityData();
@@ -28,27 +26,26 @@ public class WeatherInteractor implements LoadItemsInteractor {
 
     @Override
     public void findItems(final OnFinishedListener listener) {
-
-         new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 listener.onFinished(mWeather10DaysModel, mWeatherModel);
             }
-        }, 1200);
+        }, 1500);
     }
 
 
     private void weatherCityData() {
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(WeatherClient.BASE_URL)
+                .baseUrl(IWeatherClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
-        WeatherClient client = retrofit.create(WeatherClient.class);
+        IWeatherClient client = retrofit.create(IWeatherClient.class);
 
         Call<WeatherModel> call = client.weatherForCity(
-                WeatherClient.KEY,
-                WeatherClient.country,
-                WeatherClient.city);
+                IWeatherClient.KEY,
+                IWeatherClient.country,
+                IWeatherClient.city);
         call.enqueue(new Callback<WeatherModel>() {
             @Override
             public void onResponse(@NonNull Call<WeatherModel> call,
@@ -67,15 +64,15 @@ public class WeatherInteractor implements LoadItemsInteractor {
 
     private void weather10DaysData() {
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(WeatherClient.BASE_URL)
+                .baseUrl(IWeatherClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
-        WeatherClient client = retrofit.create(WeatherClient.class);
+        IWeatherClient client = retrofit.create(IWeatherClient.class);
 
         Call<Weather10daysModel> call = client.weather10DaysForecast(
-                WeatherClient.KEY,
-                WeatherClient.country,
-                WeatherClient.city);
+                IWeatherClient.KEY,
+                IWeatherClient.country,
+                IWeatherClient.city);
         call.enqueue(new Callback<Weather10daysModel>() {
             @Override
             public void onResponse(Call<Weather10daysModel> call, Response<Weather10daysModel> response) {

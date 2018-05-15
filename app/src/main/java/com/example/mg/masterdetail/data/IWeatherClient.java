@@ -1,13 +1,13 @@
-package com.example.mg.masterdetail.receiver;
+package com.example.mg.masterdetail.data;
 
-import com.example.mg.masterdetail.model.Weather10daysModel;
-import com.example.mg.masterdetail.model.WeatherModel;
+import com.example.mg.masterdetail.data.model.Weather10daysModel;
+import com.example.mg.masterdetail.data.model.WeatherModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface WeatherClient {
+public interface IWeatherClient {
     String BASE_URL = "http://api.wunderground.com";
     String KEY = "24b6732692393b6b";
     String country = "EG";
