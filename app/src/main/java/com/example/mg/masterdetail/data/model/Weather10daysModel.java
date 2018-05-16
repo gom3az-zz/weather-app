@@ -2,9 +2,10 @@ package com.example.mg.masterdetail.data.model;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Weather10daysModel {
+public class Weather10daysModel implements Serializable {
 
     /**
      * response : {"version":"0.1","termsofService":"http://www.wunderground.com/weather/api/d/terms.html","features":{"forecast10day":1}}

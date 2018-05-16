@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
 public class dayListActivity extends AppCompatActivity implements IDayListContract.View {
 
     private static final String TAG = "dayListActivity";
+    private static final String DAY_MODEL = "DAY_MODEL";
+    private static final String TEN_DAY_MODEL = "TEN_DAY_MODEL";
     @BindView(R.id.day_list)
     public
     RecyclerView recyclerView;

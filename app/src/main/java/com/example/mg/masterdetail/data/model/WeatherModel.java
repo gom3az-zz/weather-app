@@ -2,7 +2,9 @@ package com.example.mg.masterdetail.data.model;
 
 import com.google.gson.Gson;
 
-public class WeatherModel {
+import java.io.Serializable;
+
+public class WeatherModel implements Serializable {
 
 
     /**

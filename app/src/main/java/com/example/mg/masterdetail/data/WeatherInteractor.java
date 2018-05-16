@@ -16,11 +16,20 @@ public class WeatherInteractor implements ILoadItemsInteractor {
     private static final String TAG = "WeatherInteractor";
     private static WeatherModel mWeatherModel;
     private static Weather10daysModel mWeather10DaysModel;
+    private static WeatherInteractor weatherInteractor;
 
-    public WeatherInteractor() {
+    private WeatherInteractor() {
         weatherCityData();
     }
 
+    public static synchronized WeatherInteractor getInstance() {
+        if (weatherInteractor == null) {
+            weatherInteractor = new WeatherInteractor();
+        }
+        return weatherInteractor;
+    }
+
+    @Override
     public void weatherCityData() {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(IWeatherClient.BASE_URL)
@@ -63,8 +72,12 @@ public class WeatherInteractor implements ILoadItemsInteractor {
             @Override
             public void onResponse(Call<Weather10daysModel> call, Response<Weather10daysModel> response) {
                 mWeather10DaysModel = response.body();
+                try {
+                    if (mWeatherModel == null) Thread.sleep(350);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 listener.onFinished(mWeather10DaysModel, mWeatherModel);
-
             }
 
             @Override
@@ -73,6 +86,4 @@ public class WeatherInteractor implements ILoadItemsInteractor {
             }
         });
     }
-
-
 }
