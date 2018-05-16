@@ -1,6 +1,5 @@
 package com.example.mg.masterdetail.data;
 
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -15,28 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherInteractor implements ILoadItemsInteractor {
     private static final String TAG = "WeatherInteractor";
-    private static final int MOCK_TIME = 1500;
     private static WeatherModel mWeatherModel;
     private static Weather10daysModel mWeather10DaysModel;
 
     public WeatherInteractor() {
-
-        weather10DaysData();
         weatherCityData();
     }
 
-    @Override
-    public void findItems(final OnFinishedListener listener) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listener.onFinished(mWeather10DaysModel, mWeatherModel);
-            }
-        }, MOCK_TIME);
-    }
-
-
-    private void weatherCityData() {
+    public void weatherCityData() {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(IWeatherClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -60,10 +45,10 @@ public class WeatherInteractor implements ILoadItemsInteractor {
 
             }
         });
-
     }
 
-    private void weather10DaysData() {
+    @Override
+    public void weather10DaysData(final OnFinishedListener listener) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(IWeatherClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -78,6 +63,8 @@ public class WeatherInteractor implements ILoadItemsInteractor {
             @Override
             public void onResponse(Call<Weather10daysModel> call, Response<Weather10daysModel> response) {
                 mWeather10DaysModel = response.body();
+                listener.onFinished(mWeather10DaysModel, mWeatherModel);
+
             }
 
             @Override
@@ -86,5 +73,6 @@ public class WeatherInteractor implements ILoadItemsInteractor {
             }
         });
     }
+
 
 }

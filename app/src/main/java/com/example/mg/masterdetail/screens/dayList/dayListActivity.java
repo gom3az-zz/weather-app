@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mg.masterdetail.R;
+import com.example.mg.masterdetail.WeatherApplication;
 import com.example.mg.masterdetail.data.model.Weather10daysModel.ForecastBean.SimpleforecastBean.ForecastdayBeanX;
 import com.example.mg.masterdetail.data.model.WeatherModel;
 import com.example.mg.masterdetail.screens.dayList.contract.IDayListContract;
 import com.example.mg.masterdetail.screens.dayList.presenter.DayListPresenter;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -44,6 +46,8 @@ public class dayListActivity extends AppCompatActivity implements IDayListContra
     TextView textHumidity;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.text_no_internet)
+    TextView noInternet;
     private DayListPresenter mDayListPresenter;
 
     /**
@@ -98,5 +102,17 @@ public class dayListActivity extends AppCompatActivity implements IDayListContra
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
 
+    }
+
+    @Override
+    public void showNoInternet() {
+        noInternet.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = WeatherApplication.getRefWatcher(getBaseContext());
+        refWatcher.watch(this);
     }
 }

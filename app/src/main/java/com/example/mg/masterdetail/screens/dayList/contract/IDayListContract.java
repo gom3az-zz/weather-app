@@ -16,6 +16,8 @@ public interface IDayListContract {
         void showProgress();
 
         void hideProgress();
+
+        void showNoInternet();
     }
 
     interface UserActions {

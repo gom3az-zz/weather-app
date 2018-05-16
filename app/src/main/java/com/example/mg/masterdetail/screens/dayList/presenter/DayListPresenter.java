@@ -33,10 +33,10 @@ public class DayListPresenter implements IDayListContract.UserActions, ILoadItem
     public void fetchData() {
         if (NetworkHelper.getInstance().isNetworkAvailable(view)) {
             view.showProgress();
-            mWeatherInteractor.findItems(this);
+            mWeatherInteractor.weather10DaysData(this);
         } else {
             view.hideProgress();
-
+            view.showNoInternet();
         }
 
     }
