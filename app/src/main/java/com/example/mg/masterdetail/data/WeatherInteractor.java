@@ -18,6 +18,8 @@ public class WeatherInteractor implements ILoadItemsInteractor {
     private static Weather10daysModel mWeather10DaysModel;
     private static WeatherInteractor weatherInteractor;
 
+
+    // TODO: 5/17/2018 enhance network data fetchin
     private WeatherInteractor() {
         weatherCityData();
     }
@@ -73,7 +75,7 @@ public class WeatherInteractor implements ILoadItemsInteractor {
             public void onResponse(Call<Weather10daysModel> call, Response<Weather10daysModel> response) {
                 mWeather10DaysModel = response.body();
                 try {
-                    if (mWeatherModel == null) Thread.sleep(350);
+                    if (mWeatherModel == null) Thread.sleep(450);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

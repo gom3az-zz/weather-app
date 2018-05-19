@@ -1,4 +1,4 @@
-package com.example.mg.masterdetail.screens.dayList;
+package com.example.mg.masterdetail.util;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,13 +20,10 @@ import butterknife.ButterKnife;
 public class WeatherDayRecyclerViewAdapter
         extends RecyclerView.Adapter<WeatherDayRecyclerViewAdapter.ViewHolder> {
 
-    private final dayListActivity mParentActivity;
     private final List<ForecastdayBeanX> mValues;
 
-    public WeatherDayRecyclerViewAdapter(dayListActivity parent,
-                                         List<ForecastdayBeanX> items) {
+    public WeatherDayRecyclerViewAdapter(List<ForecastdayBeanX> items) {
         mValues = items;
-        mParentActivity = parent;
     }
 
     @NonNull
