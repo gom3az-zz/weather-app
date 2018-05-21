@@ -13,32 +13,38 @@ public class DayListPresenter implements IDayListContract.UserActions,
 
     //private static final String TAG = "DayListPresenter";
     private WeatherFragment view;
-    private ILoadItemsInteractor mWeatherInteractor;
-
+    private WeatherInteractor mWeatherInteractor;
 
     public DayListPresenter(WeatherFragment view) {
         assert this.view != null;
         this.view = view;
-        mWeatherInteractor = WeatherInteractor.getInstance();
-        fetchData();
+        mWeatherInteractor = new WeatherInteractor(this);
     }
 
     @Override
-    public void onFinished(Weather10daysModel tenDaysModel, WeatherModel dayModel) {
-        view.hideProgress();
-        view.init(dayModel.getCurrent_observation());
-        view.setupRecyclerView(tenDaysModel.getForecast().getSimpleforecast().getForecastday());
-    }
-
-    @Override
-    public void fetchData() {
+    public boolean checkConnection() {
+        boolean check;
         if (NetworkHelper.getInstance().isNetworkAvailable(view.getActivity())) {
             view.showProgress();
-            mWeatherInteractor.weather10DaysData(this);
+            check = true;
         } else {
             view.hideProgress();
             view.showNoInternet();
+            check = false;
         }
+        return check;
+    }
+
+    @Override
+    public void onFinishedWeather(WeatherModel dayModel) {
+        view.init(dayModel.getCurrent_observation());
+
+    }
+
+    @Override
+    public void onFinishedWeatherTenDays(Weather10daysModel tenDaysModel) {
+        view.hideProgress();
+        view.setupRecyclerView(tenDaysModel.getForecast().getSimpleforecast().getForecastday());
 
     }
 }

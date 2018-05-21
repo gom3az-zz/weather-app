@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.mg.masterdetail.data.model.Weather10daysModel;
 import com.example.mg.masterdetail.data.model.WeatherModel;
+import com.example.mg.masterdetail.screens.dayList.presenter.DayListPresenter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,21 +15,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherInteractor implements ILoadItemsInteractor {
     private static final String TAG = "WeatherInteractor";
-    private static WeatherModel mWeatherModel;
-    private static Weather10daysModel mWeather10DaysModel;
-    private static WeatherInteractor weatherInteractor;
+    private static OnFinishedListener mListener;
+    private static DayListPresenter mContext;
 
 
     // TODO: 5/17/2018 enhance network data fetchin
-    private WeatherInteractor() {
-        weatherCityData();
-    }
-
-    public static synchronized WeatherInteractor getInstance() {
-        if (weatherInteractor == null) {
-            weatherInteractor = new WeatherInteractor();
+    public WeatherInteractor(DayListPresenter context) {
+        WeatherInteractor.mContext = context;
+        mListener = mContext;
+        if (mContext.checkConnection()) {
+            weather10DaysData();
+            weatherCityData();
         }
-        return weatherInteractor;
     }
 
     @Override
@@ -47,11 +45,11 @@ public class WeatherInteractor implements ILoadItemsInteractor {
             @Override
             public void onResponse(@NonNull Call<WeatherModel> call,
                                    @NonNull Response<WeatherModel> response) {
-                mWeatherModel = response.body();
+                mListener.onFinishedWeather(response.body());
             }
 
             @Override
-            public void onFailure(Call<WeatherModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<WeatherModel> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
 
             }
@@ -59,7 +57,7 @@ public class WeatherInteractor implements ILoadItemsInteractor {
     }
 
     @Override
-    public void weather10DaysData(final OnFinishedListener listener) {
+    public void weather10DaysData() {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(IWeatherClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -72,18 +70,12 @@ public class WeatherInteractor implements ILoadItemsInteractor {
                 IWeatherClient.CITY);
         call.enqueue(new Callback<Weather10daysModel>() {
             @Override
-            public void onResponse(Call<Weather10daysModel> call, Response<Weather10daysModel> response) {
-                mWeather10DaysModel = response.body();
-                try {
-                    if (mWeatherModel == null) Thread.sleep(450);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                listener.onFinished(mWeather10DaysModel, mWeatherModel);
+            public void onResponse(@NonNull Call<Weather10daysModel> call, @NonNull Response<Weather10daysModel> response) {
+                mListener.onFinishedWeatherTenDays(response.body());
             }
 
             @Override
-            public void onFailure(Call<Weather10daysModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<Weather10daysModel> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });

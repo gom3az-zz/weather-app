@@ -1,8 +1,7 @@
 package com.example.mg.masterdetail.screens.dayList;
 
-
-import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -27,6 +26,7 @@ import com.example.mg.masterdetail.screens.dayList.contract.IDayListContract;
 import com.example.mg.masterdetail.screens.dayList.presenter.DayListPresenter;
 import com.example.mg.masterdetail.util.WeatherDayRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,27 +70,25 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
     RecyclerView recyclerView;
 
     Unbinder unbinder;
-    DayListPresenter mDayListPresenter;
-    FragmentAction mLisAction;
+
+    private static final String KEY_TODAY = "TODAY";
+    private static final String KEY_TEN_DAY = "KEY_TEN_DAY";
+    private DayListPresenter mDayListPresenter;
+    private WeatherModel.CurrentObservationBean mTodayData;
+    private List<ForecastdayBeanX> mDaysData;
 
     public WeatherFragment() {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mLisAction = (FragmentAction) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement listener");
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        this.setRetainInstance(true);
+        if (savedInstanceState != null) {
+            mTodayData = savedInstanceState.getParcelable(KEY_TODAY);
+            mDaysData = savedInstanceState.getParcelableArrayList(KEY_TEN_DAY);
         }
-    }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Override
@@ -99,33 +97,39 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         unbinder = ButterKnife.bind(this, view);
         mDayListPresenter = new DayListPresenter(this);
+        if (savedInstanceState != null) {
+            init(mTodayData);
+            setupRecyclerView(mDaysData);
+        }
         return view;
     }
 
     @Override
     public void setupRecyclerView(@NonNull List<ForecastdayBeanX> daysData) {
+        mDaysData = daysData;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                 Objects.requireNonNull(getContext()),
                 DividerItemDecoration.HORIZONTAL));
-        recyclerView.setAdapter(new WeatherDayRecyclerViewAdapter(daysData));
-        mLisAction.done();
+        recyclerView.setAdapter(new WeatherDayRecyclerViewAdapter(mDaysData));
     }
 
     @Override
     public void init(@NonNull WeatherModel.CurrentObservationBean todayData) {
-        textCityName.setText(todayData.getDisplay_location().getFull());
-        textHumidity.setText(todayData.getRelative_humidity());
-        textWeatherTemp.setText(todayData.getTemperature_string());
-        textWind.setText(todayData.getWind_gust_kph());
-        textWeatherCondition.setText(todayData.getIcon());
-        textCondition.setText(todayData.getIcon());
+        mTodayData = todayData;
+        textCityName.setText(mTodayData.getDisplay_location().getFull());
+        textWeatherCondition.setText(mTodayData.getIcon());
+        textWeatherTemp.setText(mTodayData.getTemperature_string());
+
+        textCondition.setText(String.format("condition\n%s", mTodayData.getIcon()));
+        textWind.setText(String.format("wind speed\n%s kph", String.valueOf(mTodayData.getWind_kph())));
+        textHumidity.setText(String.format("humidity\n%s", mTodayData.getRelative_humidity()));
 
         Glide.with(this)
                 .asGif()
-                .load(todayData.getIcon_url())
+                .load(mTodayData.getIcon_url())
                 .into(imageWeatherCondition);
     }
 
@@ -146,13 +150,18 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_TODAY, mTodayData);
+        outState.putParcelableArrayList(KEY_TEN_DAY, (ArrayList<? extends Parcelable>) mDaysData);
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-    public interface FragmentAction {
-        void done();
-    }
 
 }

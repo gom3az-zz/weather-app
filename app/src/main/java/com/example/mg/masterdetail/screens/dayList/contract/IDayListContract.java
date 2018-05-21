@@ -21,7 +21,7 @@ public interface IDayListContract {
     }
 
     interface UserActions {
-        void fetchData();
+        boolean checkConnection();
 
     }
 }

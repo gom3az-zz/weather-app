@@ -7,10 +7,13 @@ public interface ILoadItemsInteractor {
 
     void weatherCityData();
 
-    void weather10DaysData(final OnFinishedListener dayListPresenter);
+    void weather10DaysData();
 
     interface OnFinishedListener {
-        void onFinished(Weather10daysModel tenDaysModel,
-                        WeatherModel dayModel);
+        void onFinishedWeather(WeatherModel dayModel);
+
+        void onFinishedWeatherTenDays(Weather10daysModel tenDaysModel);
+
+
     }
 }
