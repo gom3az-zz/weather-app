@@ -13,11 +13,8 @@ public interface IDayListContract {
 
         void init(@NonNull WeatherModel.CurrentObservationBean model);
 
-        void showProgress();
-
-        void hideProgress();
-
         void showNoInternet();
+
     }
 
     interface UserActions {

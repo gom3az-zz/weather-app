@@ -5,6 +5,7 @@ import com.example.mg.masterdetail.data.model.WeatherModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 
 public interface IWeatherClient {
@@ -13,12 +14,19 @@ public interface IWeatherClient {
     String COUNTRY = "EG";
     String CITY = "Cairo";
 
-
+    @Headers({
+            "Accept: application/json",
+            "Cache-Control: max-age=640000"
+    })
     @GET("/api/{key}/conditions/q/{COUNTRY}/{CITY}.json")
     Call<WeatherModel> weatherForCity(@Path("key") String key,
                                       @Path("COUNTRY") String country,
                                       @Path("CITY") String city);
 
+    @Headers({
+            "Accept: application/json",
+            "Cache-Control: max-age=640000"
+    })
     @GET("/api/{key}/forecast10day/q/{COUNTRY}/{CITY}.json")
     Call<Weather10daysModel> weather10DaysForecast(@Path("key") String key,
                                                    @Path("COUNTRY") String country,

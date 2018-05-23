@@ -1,6 +1,6 @@
 package com.example.mg.masterdetail.util;
 
-import com.example.mg.masterdetail.screens.dayList.dayListActivity;
+import com.example.mg.masterdetail.screens.dayList.DayListActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,12 +14,12 @@ import static junit.framework.Assert.assertTrue;
 
 public class NetworkHelperTest {
     /*@Rule
-    public ActivityTestRule<dayListActivity> mActivityTestRule =
-            new ActivityTestRule<>(dayListActivity.class);*/
+    public ActivityTestRule<DayListActivity> mActivityTestRule =
+            new ActivityTestRule<>(DayListActivity.class);*/
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-    private dayListActivity mDayListActivity;
+    private DayListActivity mDayListActivity;
 
 
     @Before

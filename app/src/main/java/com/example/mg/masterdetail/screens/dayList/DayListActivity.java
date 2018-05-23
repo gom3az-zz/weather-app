@@ -12,10 +12,9 @@ import com.squareup.leakcanary.RefWatcher;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class dayListActivity extends AppCompatActivity {
+public class DayListActivity extends AppCompatActivity {
     @BindView(R.id.fragment_master_day)
     FrameLayout fragmentMasterDay;
-    WeatherFragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class dayListActivity extends AppCompatActivity {
 
         assert fragmentMasterDay != null;
         FragmentManager fm = getSupportFragmentManager();
-        myFragment = (WeatherFragment) fm.findFragmentByTag(WeatherFragment.class.getName());
+        WeatherFragment myFragment = (WeatherFragment) fm.findFragmentByTag(WeatherFragment.class.getName());
 
         if (savedInstanceState == null) {
             if (myFragment == null) {

@@ -5,13 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class NetworkHelper {
-    private static NetworkHelper networkHelper;
+    private static NetworkHelper sNetworkHelper;
 
     public static synchronized NetworkHelper getInstance() {
-        if (networkHelper == null) {
-            networkHelper = new NetworkHelper();
+        if (sNetworkHelper == null) {
+            sNetworkHelper = new NetworkHelper();
         }
-        return networkHelper;
+        return sNetworkHelper;
     }
 
     public boolean isNetworkAvailable(Context context) {

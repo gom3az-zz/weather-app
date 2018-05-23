@@ -8,11 +8,11 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 public class WeatherApplication extends Application {
-    private RefWatcher refWatcher;
+    private RefWatcher mRefWatcher;
 
     public static RefWatcher getRefWatcher(Context context) {
         WeatherApplication application = (WeatherApplication) context.getApplicationContext();
-        return application.refWatcher;
+        return application.mRefWatcher;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class WeatherApplication extends Application {
             // You should not init your app in this process.
             return;
         }
-        refWatcher = LeakCanary.install(this);
+        mRefWatcher = LeakCanary.install(this);
     }
 }
