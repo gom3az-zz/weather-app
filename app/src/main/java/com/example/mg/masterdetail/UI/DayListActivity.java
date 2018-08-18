@@ -1,4 +1,4 @@
-package com.example.mg.masterdetail.screens.dayList;
+package com.example.mg.masterdetail.UI;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+def daggerVer = 2.16
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -15,6 +15,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
@@ -34,7 +38,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
     //setting up retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     //setting up picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -52,5 +57,11 @@ dependencies {
 
     implementation 'com.android.volley:volley:1.1.0'
 
+    implementation "com.google.dagger:dagger:$daggerVer"
+    implementation "com.google.dagger:dagger-android-support:$daggerVer"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVer"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVer"
 
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 }

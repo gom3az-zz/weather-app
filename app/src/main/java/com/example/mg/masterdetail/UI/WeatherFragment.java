@@ -1,8 +1,10 @@
-package com.example.mg.masterdetail.screens.dayList;
+package com.example.mg.masterdetail.UI;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -15,26 +17,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.mg.masterdetail.R;
+import com.example.mg.masterdetail.UI.DI.DaggerIFragComponent;
+import com.example.mg.masterdetail.UI.DI.FragmentModule;
+import com.example.mg.masterdetail.WeatherApplication;
 import com.example.mg.masterdetail.data.model.Weather10daysModel.ForecastBean.SimpleforecastBean.ForecastdayBeanX;
 import com.example.mg.masterdetail.data.model.WeatherModel;
-import com.example.mg.masterdetail.screens.dayList.contract.IDayListContract;
-import com.example.mg.masterdetail.screens.dayList.presenter.DayListPresenter;
-import com.example.mg.masterdetail.util.WeatherDayRecyclerViewAdapter;
+import com.example.mg.masterdetail.util.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class WeatherFragment extends Fragment implements IDayListContract.View {
 
+public class WeatherFragment extends Fragment implements IDayListContract.IView {
+
+    @Inject
+    RequestManager glide;
+    @Inject
+    WeatherDayRecyclerViewAdapter adapter;
+    @Inject
+    DayListPresenter presenter;
+    @Inject
+    DialogUtils dialog;
+    private ProgressDialog progressDialog;
 
     @BindView(R.id.text_city_name)
     TextView textCityName;
@@ -74,11 +86,24 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DaggerIFragComponent.builder()
+                .iAppComponent(WeatherApplication.get(getActivity()).getAppComponent())
+                .fragmentModule(new FragmentModule(this))
+                .build().inject(this);
+
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         unbinder = ButterKnife.bind(this, view);
-        new DayListPresenter(this);
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(
+                recyclerView.getContext(),
+                DividerItemDecoration.HORIZONTAL));
 
         if (savedInstanceState != null) {
             mTodayData = savedInstanceState.getParcelable(KEY_TODAY);
@@ -87,6 +112,12 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
             setupRecyclerView(mDaysData);
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
     }
 
     @Override
@@ -102,15 +133,15 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
         super.onDestroyView();
         recyclerView.setAdapter(null);
         unbinder.unbind();
+        presenter.onDestroy();
     }
 
     @Override
     public void setupRecyclerView(@NonNull List<ForecastdayBeanX> daysData) {
         mDaysData = daysData;
-        recyclerView.addItemDecoration(new DividerItemDecoration(
-                recyclerView.getContext(),
-                DividerItemDecoration.HORIZONTAL));
-        recyclerView.setAdapter(new WeatherDayRecyclerViewAdapter(daysData));
+        recyclerView.setAdapter(adapter);
+        adapter.setData(daysData);
+
     }
 
     @Override
@@ -124,8 +155,7 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
         textWind.setText(String.format("wind speed\n%s kph", String.valueOf(mTodayData.getWind_kph())));
         textHumidity.setText(String.format("humidity\n%s", mTodayData.getRelative_humidity()));
 
-        Glide.with(this)
-                .asGif()
+        glide.asGif()
                 .load(mTodayData.getIcon_url())
                 .into(imageWeatherCondition);
     }
@@ -133,6 +163,18 @@ public class WeatherFragment extends Fragment implements IDayListContract.View {
     @Override
     public void showNoInternet() {
         textNoInternet.setVisibility(View.VISIBLE);
+
     }
 
+    @Override
+    public void showLoading() {
+        progressDialog = dialog.showLoadingDialog();
+        progressDialog.show();
+
+    }
+
+    @Override
+    public void hideLoading() {
+        progressDialog.dismiss();
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.mg.masterdetail.util;
 
-import com.example.mg.masterdetail.screens.dayList.DayListActivity;
+import com.example.mg.masterdetail.UI.DayListActivity;
 
 import org.junit.Before;
 import org.junit.Rule;

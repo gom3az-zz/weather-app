@@ -1,4 +1,4 @@
-package com.example.mg.masterdetail.util;
+package com.example.mg.masterdetail.UI;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,23 +8,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.RequestManager;
 import com.example.mg.masterdetail.R;
+import com.example.mg.masterdetail.UI.DI.IFragScope;
 import com.example.mg.masterdetail.data.model.Weather10daysModel.ForecastBean.SimpleforecastBean.ForecastdayBeanX;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@IFragScope
 public class WeatherDayRecyclerViewAdapter
         extends RecyclerView.Adapter<WeatherDayRecyclerViewAdapter.ViewHolder> {
 
-    private final List<ForecastdayBeanX> mValues;
+    private List<ForecastdayBeanX> mValues;
+    private RequestManager mGlide;
 
-    public WeatherDayRecyclerViewAdapter(List<ForecastdayBeanX> items) {
-        mValues = items;
+    @Inject
+    public WeatherDayRecyclerViewAdapter(RequestManager glide) {
+        mGlide = glide;
     }
+
+    public void setData(List<ForecastdayBeanX> values) {
+        mValues = values;
+    }
+
 
     @NonNull
     @Override
@@ -43,7 +54,7 @@ public class WeatherDayRecyclerViewAdapter
                 mValues.get(position).getDate().getWeekday_short(),
                 mValues.get(position).getDate().getDay()
         ));
-        Picasso.get()
+        mGlide
                 .load(mValues.get(position).getIcon_url())
                 .into(holder.weatherIc);
         holder.weatherDegree.setText(String.format("%s / %s",
@@ -54,9 +65,12 @@ public class WeatherDayRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        try {
+            return mValues.size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_weather_day)
