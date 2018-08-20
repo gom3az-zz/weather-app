@@ -3,17 +3,11 @@ package com.example.mg.masterdetail.data;
 import com.example.mg.masterdetail.data.model.Weather10daysModel;
 import com.example.mg.masterdetail.data.model.WeatherModel;
 
+import io.reactivex.Single;
+
 public interface ILoadItemsInteractor {
+    Single<WeatherModel> weatherCityData();
 
-    void weatherCityData();
+    Single<Weather10daysModel> weather10DaysData();
 
-    void weather10DaysData();
-
-    interface OnFinishedListener {
-        void onFinishedWeather(WeatherModel dayModel);
-
-        void onFinishedWeatherTenDays(Weather10daysModel tenDaysModel);
-
-
-    }
 }

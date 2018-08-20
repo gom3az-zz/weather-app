@@ -1,7 +1,6 @@
 package com.example.mg.masterdetail.data;
 
 import com.example.mg.masterdetail.UI.DI.IFragScope;
-import com.example.mg.masterdetail.UI.IDayListContract;
 import com.example.mg.masterdetail.data.model.Weather10daysModel;
 import com.example.mg.masterdetail.data.model.WeatherModel;
 
@@ -12,12 +11,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @IFragScope
-public class DataInteractor implements IDayListContract.IDataInteractor {
-    private final String TAG = "DataInteractor";
+public class DataInteractor implements ILoadItemsInteractor {
+
     private final IWeatherClient mRetrofitClient;
 
     @Inject
-    public DataInteractor(IWeatherClient client) {
+    DataInteractor(IWeatherClient client) {
         mRetrofitClient = client;
     }
 

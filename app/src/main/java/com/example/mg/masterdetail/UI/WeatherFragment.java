@@ -2,7 +2,6 @@ package com.example.mg.masterdetail.UI;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -26,7 +25,6 @@ import com.example.mg.masterdetail.data.model.Weather10daysModel.ForecastBean.Si
 import com.example.mg.masterdetail.data.model.WeatherModel;
 import com.example.mg.masterdetail.util.DialogUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,7 +44,6 @@ public class WeatherFragment extends Fragment implements IDayListContract.IView 
     DayListPresenter presenter;
     @Inject
     DialogUtils dialog;
-    private ProgressDialog progressDialog;
 
     @BindView(R.id.text_city_name)
     TextView textCityName;
@@ -76,11 +73,7 @@ public class WeatherFragment extends Fragment implements IDayListContract.IView 
     RecyclerView recyclerView;
 
     Unbinder unbinder;
-    //private static final String TAG = "WeatherFragment";
-    private static final String KEY_TODAY = "KEY_TODAY";
-    private static final String KEY_TEN_DAY = "KEY_TEN_DAY";
-    private WeatherModel.CurrentObservationBean mTodayData;
-    private List<ForecastdayBeanX> mDaysData;
+    private ProgressDialog mProgressDialog;
 
     public WeatherFragment() {
     }
@@ -101,16 +94,6 @@ public class WeatherFragment extends Fragment implements IDayListContract.IView 
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(
-                recyclerView.getContext(),
-                DividerItemDecoration.HORIZONTAL));
-
-        if (savedInstanceState != null) {
-            mTodayData = savedInstanceState.getParcelable(KEY_TODAY);
-            mDaysData = savedInstanceState.getParcelableArrayList(KEY_TEN_DAY);
-            init(mTodayData);
-            setupRecyclerView(mDaysData);
-        }
         return view;
     }
 
@@ -118,14 +101,6 @@ public class WeatherFragment extends Fragment implements IDayListContract.IView 
     public void onResume() {
         super.onResume();
         presenter.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_TODAY, mTodayData);
-        outState.putParcelableArrayList(KEY_TEN_DAY, (ArrayList<? extends Parcelable>) mDaysData);
-
     }
 
     @Override
@@ -138,15 +113,16 @@ public class WeatherFragment extends Fragment implements IDayListContract.IView 
 
     @Override
     public void setupRecyclerView(@NonNull List<ForecastdayBeanX> daysData) {
-        mDaysData = daysData;
+        recyclerView.addItemDecoration(new DividerItemDecoration(
+                recyclerView.getContext(),
+                DividerItemDecoration.HORIZONTAL));
         recyclerView.setAdapter(adapter);
         adapter.setData(daysData);
 
     }
 
     @Override
-    public void init(@NonNull WeatherModel.CurrentObservationBean todayData) {
-        mTodayData = todayData;
+    public void init(@NonNull WeatherModel.CurrentObservationBean mTodayData) {
         textCityName.setText(mTodayData.getDisplay_location().getFull());
         textWeatherCondition.setText(mTodayData.getIcon());
         textWeatherTemp.setText(mTodayData.getTemperature_string());
@@ -168,13 +144,13 @@ public class WeatherFragment extends Fragment implements IDayListContract.IView 
 
     @Override
     public void showLoading() {
-        progressDialog = dialog.showLoadingDialog();
-        progressDialog.show();
+        mProgressDialog = dialog.showLoadingDialog();
+        mProgressDialog.show();
 
     }
 
     @Override
     public void hideLoading() {
-        progressDialog.dismiss();
+        mProgressDialog.dismiss();
     }
 }

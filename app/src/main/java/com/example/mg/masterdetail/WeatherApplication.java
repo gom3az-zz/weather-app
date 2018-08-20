@@ -8,7 +8,6 @@ import com.example.mg.masterdetail.DI.DaggerIAppComponent;
 import com.example.mg.masterdetail.DI.IAppComponent;
 import com.example.mg.masterdetail.DI.Modules.AppModule;
 import com.example.mg.masterdetail.DI.Modules.NetworkModule;
-import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -29,10 +28,10 @@ public class WeatherApplication extends Application {
         return appComponent;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
-        initStetho();
         initLeakCanary();
         initDagger();
     }
@@ -52,12 +51,6 @@ public class WeatherApplication extends Application {
             return;
         }
         mRefWatcher = LeakCanary.install(this);
-    }
-
-    private void initStetho() {
-        if (BuildConfig.DEBUG) {
-            Stetho.initializeWithDefaults(this);
-        }
     }
 
 

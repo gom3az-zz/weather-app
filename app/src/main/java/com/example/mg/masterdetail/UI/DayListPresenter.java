@@ -2,7 +2,8 @@ package com.example.mg.masterdetail.UI;
 
 import com.example.mg.masterdetail.UI.DI.IFragScope;
 import com.example.mg.masterdetail.data.DataInteractor;
-import com.example.mg.masterdetail.data.model.ZipModel;
+import com.example.mg.masterdetail.data.model.Weather10daysModel;
+import com.example.mg.masterdetail.data.model.WeatherModel;
 
 import javax.inject.Inject;
 
@@ -17,7 +18,7 @@ public class DayListPresenter implements IDayListContract.IPresenter {
     private CompositeDisposable compositeDisposable;
 
     @Inject
-    public DayListPresenter(WeatherFragment view, DataInteractor interactor) {
+    DayListPresenter(WeatherFragment view, DataInteractor interactor) {
         mView = view;
         mDataInteractor = interactor;
         compositeDisposable = new CompositeDisposable();
@@ -26,20 +27,21 @@ public class DayListPresenter implements IDayListContract.IPresenter {
 
     @Override
     public void onResume() {
-        compositeDisposable.add(Single.zip(mDataInteractor.weatherCityData(),
-                mDataInteractor.weather10DaysData(), ZipModel::new)
-                .doOnSubscribe(__ -> mView.showLoading())
-                .doFinally(mView::hideLoading)
-                .subscribe(
-                        zipModel -> {
-                            mView.init(
-                                    zipModel.getWeatherModel().getCurrent_observation());
+        Single<WeatherModel> weatherModelSingle = mDataInteractor.weatherCityData();
+        Single<Weather10daysModel> weather10daysModelSingle = mDataInteractor.weather10DaysData();
 
-                            mView.setupRecyclerView(
-                                    zipModel.getWeather10daysModel()
-                                            .getForecast().getSimpleforecast().getForecastday());
-                        },
-                        throwable -> mView.showNoInternet()));
+
+        compositeDisposable.add(weatherModelSingle.doOnSubscribe(__ -> mView.showLoading())
+                .doOnSuccess(weatherModel -> mView.init(weatherModel.getCurrent_observation()))
+                .flatMap(__ -> weather10daysModelSingle)
+                .doOnSuccess(weather10daysModel ->
+                        mView.setupRecyclerView(weather10daysModel.getForecast()
+                                .getSimpleforecast().getForecastday()))
+                .doFinally(mView::hideLoading)
+                .subscribe(__ -> {
+                        }, throwable -> mView.showNoInternet()
+                ));
+
 
     }
 

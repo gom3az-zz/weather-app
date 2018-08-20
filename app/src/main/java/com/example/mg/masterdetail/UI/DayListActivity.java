@@ -1,5 +1,6 @@
 package com.example.mg.masterdetail.UI;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,6 @@ public class DayListActivity extends AppCompatActivity {
         assert fragmentMasterDay != null;
         FragmentManager fm = getSupportFragmentManager();
         WeatherFragment myFragment = (WeatherFragment) fm.findFragmentByTag(WeatherFragment.class.getName());
-
         if (savedInstanceState == null) {
             if (myFragment == null) {
                 myFragment = new WeatherFragment();
