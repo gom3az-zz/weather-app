@@ -7,7 +7,7 @@
     android:paddingRight="8dp">
 
     <TextView
-        android:id="@+id/text_weather_day"
+        android:id="@+id/weatherDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -16,7 +16,7 @@
         android:paddingBottom="8dp" />
 
     <ImageView
-        android:id="@+id/image_weather"
+        android:id="@+id/weatherIc"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center"
@@ -24,7 +24,7 @@
         android:paddingBottom="8dp" />
 
     <TextView
-        android:id="@+id/text_weather_degree"
+        android:id="@+id/weatherDegree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
