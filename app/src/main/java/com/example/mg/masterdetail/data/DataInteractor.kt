@@ -22,27 +22,27 @@ class DataInteractor : ILoadItemsInteractor, KoinComponent {
 
     private fun <T : Any> safeApiCall(call: Response<T>): T? {
 
-        val result: Result<T> = safeApiResult(call)
+        val result = safeApiResult(call)
         var data: T? = null
 
         when (result) {
             is Result.Success ->
                 data = result.data
             is Result.Error -> {
-                Log.d("1.DataRepository", " & Exception - ${result.exception}")
+                Log.d("1.DataRepository", " & Exception - ${result.error}")
             }
         }
         return data
 
     }
 
-    private fun <T : Any> safeApiResult(call: Response<T>): Result<T> {
+    private fun <T : Any> safeApiResult(call: Response<T>): Result<T, Any> {
         if (call.isSuccessful) return Result.Success(call.body()!!)
         return Result.Error(IOException("Error Occurred during getting safe Api result, Custom ERROR "))
     }
 }
 
-sealed class Result<out T : Any> {
-    data class Success<out T : Any>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+sealed class Result<out T, out E> {
+    data class Success<out T : Any>(val data: T) : Result<T, Nothing>()
+    data class Error<out E : Any>(val error: E) : Result<Nothing, E>()
 }

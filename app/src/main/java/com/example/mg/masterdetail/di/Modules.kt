@@ -11,6 +11,7 @@ import com.example.mg.masterdetail.data.WeatherService.Companion.provideRetrofit
 import com.example.mg.masterdetail.ui.DayListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -24,11 +25,13 @@ val appModule = module {
     single { Glide.with(androidContext()) }
 }
 
+
 val networkModule = module {
     single {
         provideLoggingInterceptor()
     }
-    single {
+
+    single(named(WEATHER_MODEL)) {
         provideRetrofit(get())
     }
     single {
@@ -42,6 +45,8 @@ val networkModule = module {
     }
 
     single {
-        get<Retrofit>().create(IWeatherClient::class.java)
+        get<Retrofit>(named(WEATHER_MODEL)).create(IWeatherClient::class.java)
     }
 }
+
+private const val WEATHER_MODEL = "weather"
