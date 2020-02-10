@@ -5,7 +5,7 @@ import com.example.mg.masterdetail.data.model.WeatherModel
 
 interface ILoadItemsInteractor {
 
-    suspend fun weatherCityData(): WeatherModel?
+    suspend fun weatherCityData(): Result<WeatherModel>
 
-    suspend fun weatherDaysData(): WeatherDaysModel?
+    suspend fun weatherDaysData(): Result<WeatherDaysModel>
 }
