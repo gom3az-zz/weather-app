@@ -2,6 +2,8 @@ package com.example.mg.masterdetail.data
 
 import com.example.mg.masterdetail.data.model.WeatherDaysModel
 import com.example.mg.masterdetail.data.model.WeatherModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -12,11 +14,15 @@ class DataInteractor : ILoadItemsInteractor, KoinComponent {
     private val mRetrofitClient: IWeatherClient by inject()
 
     override suspend fun weatherCityData(): Result<WeatherModel> {
-        return safeApiResult(mRetrofitClient.weatherForCity(IWeatherClient.CITY, IWeatherClient.KEY))
+        return withContext(Dispatchers.IO) {
+            safeApiResult(mRetrofitClient.weatherForCity(IWeatherClient.CITY, IWeatherClient.KEY))
+        }
     }
 
     override suspend fun weatherDaysData(): Result<WeatherDaysModel> {
-        return safeApiResult(mRetrofitClient.weatherDaysForCity(IWeatherClient.CITY, IWeatherClient.KEY))
+        return withContext(Dispatchers.IO) {
+            safeApiResult(mRetrofitClient.weatherDaysForCity(IWeatherClient.CITY, IWeatherClient.KEY))
+        }
     }
 
     private fun <T> safeApiResult(call: Response<T>): Result<T> {

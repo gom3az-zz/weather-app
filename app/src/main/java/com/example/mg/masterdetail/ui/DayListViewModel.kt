@@ -7,6 +7,7 @@ import com.example.mg.masterdetail.data.DataInteractor
 import com.example.mg.masterdetail.data.Result
 import com.example.mg.masterdetail.data.model.WeatherDaysModel
 import com.example.mg.masterdetail.data.model.WeatherModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class DayListViewModel(private val dataInteractor: DataInteractor) : BaseViewModel() {
@@ -23,21 +24,19 @@ class DayListViewModel(private val dataInteractor: DataInteractor) : BaseViewMod
         fetch()
     }
 
-    private fun fetch() {
-        viewModelScope.launch(handler) {
+    private fun fetch() = viewModelScope.launch(handler) {
 
-            when (val weatherData = dataInteractor.weatherDaysData()) {
-                is Result.Success -> {
-                    _weatherDaysObserver.value = weatherData.data
-                }
-            }
+        val weatherDeferred = async {
+            dataInteractor.weatherCityData()
+        }
+        val weatherDaysDeferred = async { dataInteractor.weatherDaysData() }
 
-            when (val weatherCityData = dataInteractor.weatherCityData()) {
-                is Result.Success -> {
-                    _weatherObserver.value = weatherCityData.data
-                }
-            }
+        when (val weatherCityData = weatherDeferred.await()) {
+            is Result.Success -> _weatherObserver.value = weatherCityData.data
+        }
+
+        when (val weatherData = weatherDaysDeferred.await()) {
+            is Result.Success -> _weatherDaysObserver.value = weatherData.data
         }
     }
-
 }

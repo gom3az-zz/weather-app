@@ -1,5 +1,6 @@
 package com.example.mg.masterdetail.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class WeatherDayRecyclerViewAdapter(
 
     fun setData(values: List<WeatherDaysModel.Data>) {
         mValues = values
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,15 +28,14 @@ class WeatherDayRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.weatherDay.text = mValues[position].valid_date
 
-        holder.itemView.weatherDegree.text = String.format("%s / %s",
-                mValues[position].app_max_temp,
-                mValues[position].low_temp)
+        holder.itemView.weatherDegree.text = "${mValues[position].app_max_temp} / ${mValues[position].low_temp}"
 
         mValues[position].weather?.let {
-            mGlide.load(String.format("https://www.weatherbit.io/static/img/icons/%s.png", it.icon))
+            mGlide.load("https://www.weatherbit.io/static/img/icons/${it.icon}.png")
                     .into(holder.itemView.weatherIc)
         }
 

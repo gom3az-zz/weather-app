@@ -16,7 +16,7 @@ interface IWeatherClient {
     }
 
     @Headers("Accept: application/json", "Cache-Control: max-age=640000")
-    @GET("v3.0/current")
+    @GET("v2.0/current")
     suspend fun weatherForCity(@Query("city") country: String,
                                @Query("key") key: String): Response<WeatherModel>
 
